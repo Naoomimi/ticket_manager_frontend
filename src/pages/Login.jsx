@@ -13,7 +13,7 @@ export default function Login() {
     console.log("ENVIAR A API:", { email, password });
 
     //Con esto redirigimos:
-    navigate("/tiquetes");
+    navigate("/admin");
 
   }
   return (
