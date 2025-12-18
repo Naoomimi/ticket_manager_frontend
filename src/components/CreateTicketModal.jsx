@@ -14,7 +14,7 @@ export default function CreateTicketModal({ open, onClose, adminUserId }) {
 
         const loadUsers = async () => {
             try {
-                const res = await fetch(`${API_URL}/users`);
+                const res = await fetch(`${API_URL}/users/`);
                 const data = await res.json();
                 setUsers(data.users || []);
             } catch {
@@ -38,7 +38,7 @@ export default function CreateTicketModal({ open, onClose, adminUserId }) {
                 created_by_user_id: adminUserId,
             };
 
-            const res = await fetch(`${API_URL}/tickets`, {
+            const res = await fetch(`${API_URL}/tickets/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),

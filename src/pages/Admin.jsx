@@ -31,7 +31,7 @@ export default function AdminUsers() {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`${API_URL}/users`);
+            const res = await fetch(`${API_URL}/users/`);
             if (!res.ok) throw new Error("Error al obtener usuarios");
             const data = await res.json();
             setUsers(data.users || []);
@@ -49,7 +49,7 @@ export default function AdminUsers() {
     const handleCreateUser = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`${API_URL}/users`, {
+            const res = await fetch(`${API_URL}/users/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -89,7 +89,7 @@ export default function AdminUsers() {
         if (!ok) return;
 
         try {
-            const res = await fetch(`${API_URL}/users`, {
+            const res = await fetch(`${API_URL}/users/`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id }),

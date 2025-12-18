@@ -32,7 +32,6 @@ const Tiquetes = () => {
   const updateTicketStateOnServer = async (ticket, newStateId) => {
     try {
       const body = {
-        id: ticket.id,
         title: ticket.title,
         description: ticket.description,
         state_id: newStateId,
@@ -40,7 +39,7 @@ const Tiquetes = () => {
         assigned_to_user_id: ticket.assigned_to_user_id,
       };
 
-      await fetch(`${API_URL}/tickets`, {
+      await fetch(`${API_URL}/tickets/${ticket.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

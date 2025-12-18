@@ -29,7 +29,7 @@ const Admin = () => {
         assigned_to_user_id: ticket.assigned_to_user_id,
       };
 
-      await fetch(`${API_URL}/tickets`, {
+      await fetch(`${API_URL}/tickets/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
