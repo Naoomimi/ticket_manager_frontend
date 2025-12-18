@@ -1,33 +1,19 @@
-import { useState } from "react";
-import UserHeader from "../components/Header/UserHeader";
+import React from "react";
+import AdminHeader from "../components/Header/AdminHeader";
 import { useAuth } from "../auth/AuthContext";
 import TicketsBoard from "../components/Board/TicketBoard";
-import TicketModal from "../components/TicketModal";
-
 import {
   useMyTicketsBoard,
   COLUMN_TO_STATE,
   columnOrder,
 } from "../hooks/useMyTickets";
 
+// EDITE ESTA PAGINA CON SUS CMABIOS YA SÍ, KIANY. Yo solo pegué y copié el diseño de la pagina Tiquetes
 const API_URL = "http://localhost:8080";
 
-const Tiquetes = () => {
+const Admin = () => {
   const { user } = useAuth();
   const { columns, setColumns, loading } = useMyTicketsBoard(user);
-
-  const [selectedTicketId, setSelectedTicketId] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openTicket = (id) => {
-    setSelectedTicketId(id);
-    setIsModalOpen(true);
-  };
-
-  const closeTicket = () => {
-    setIsModalOpen(false);
-    setSelectedTicketId(null);
-  };
 
   const updateTicketStateOnServer = async (ticket, newStateId) => {
     try {
@@ -92,27 +78,20 @@ const Tiquetes = () => {
   };
 
   return (
-  <div className="min-h-screen bg-[#f3e9ff] flex flex-col">
-    <UserHeader />
+    <div className="min-h-screen bg-[#f3e9ff] flex flex-col">
+      <AdminHeader />
 
-    <main className="flex-1 px-6 py-8">
-      <TicketsBoard
-        title="Mis tiquetes"
-        columns={columns}
-        columnOrder={columnOrder}
-        loading={loading}
-        onDragEnd={handleDragEnd}
-        onTicketClick={openTicket}
-      />
-    </main>
-
-    <TicketModal
-      open={isModalOpen}
-      onClose={closeTicket}
-      ticketId={selectedTicketId}
-    />
-  </div>
-);
+      <main className="flex-1 px-6 py-8">
+        <TicketsBoard
+          title="Mis tiquetes"
+          columns={columns}
+          columnOrder={columnOrder}
+          loading={loading}
+          onDragEnd={handleDragEnd}
+        />
+      </main>
+    </div>
+  );
 };
 
-export default Tiquetes;
+export default Admin;
