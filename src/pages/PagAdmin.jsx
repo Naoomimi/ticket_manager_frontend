@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminHeader from "../components/Header/AdminHeader";
 import { useAuth } from "../auth/AuthContext";
 import TicketsBoard from "../components/Board/TicketBoard";
@@ -12,7 +12,7 @@ const API_URL = "http://localhost:8080";
 const Admin = () => {
   const { user } = useAuth();
   const { columns, setColumns, loading } = useAllTicketsBoard();
-
+  const [users, setUsers] = useState({});
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,6 +25,25 @@ const Admin = () => {
     setIsModalOpen(false);
     setSelectedTicketId(null);
   };
+
+  const fetchUsers = async () => {
+    try {
+        const res = await fetch(`${API_URL}/users/`);
+        if (!res.ok) throw new Error("Error al obtener usuarios");
+        const data = await res.json();
+        let users_id_to_name = {}
+        data.users.forEach( user => {
+          users_id_to_name[user.Id] = user.Name
+        })
+        setUsers(users_id_to_name);
+    } catch (err) {
+      console.log(`error: ${err}`)
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -115,6 +134,7 @@ const Admin = () => {
           open={isModalOpen}
           onClose={closeTicket}
           ticketId={selectedTicketId}
+          usersById={users}
         />
 
         <CreateTicketModal
