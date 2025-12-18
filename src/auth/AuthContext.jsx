@@ -18,26 +18,32 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-const login = async (email, password) => {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  const login = async (email, password) => {
+    const res = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await res.json();
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      //por si el backend no responde JSON
+    }
 
-  if (!res.ok || data.success === false) {
-    throw new Error(data.message || "Credenciales inválidas");
-  }
+    if (!res.ok || data?.success === false) {
+      const err = new Error("AUTH_FAILED");
+      err.status = res.status; 
+      throw err;
+    }
 
-  const user = data.user; 
+    const u = data.user;
 
-  setUser(user);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-
-  return user; 
-};
+    setUser(u);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+    return u;
+  };
 
   const logout = () => {
     setUser(null);
@@ -45,9 +51,7 @@ const login = async (email, password) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user }}
-    >
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );
