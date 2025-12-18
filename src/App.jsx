@@ -10,7 +10,7 @@ function App() {
   return (
     <Routes>
       {/* Pública */}
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
 
       {/* Protegidas */}
       <Route
