@@ -76,7 +76,7 @@ export function useMyTicketsBoard(user) {
     const fetchTickets = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_URL}/tickets`);
+        const res = await fetch(`${API_URL}/tickets/`);
         if (!res.ok) throw new Error("Error al obtener tickets");
 
         const data = await res.json();

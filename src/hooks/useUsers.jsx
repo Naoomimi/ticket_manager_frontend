@@ -10,7 +10,7 @@ export function useUsers() {
         setLoadingUsers(true);
         setUsersError("");
         try {
-            const res = await fetch(`${API_URL}/users`);
+            const res = await fetch(`${API_URL}/users/`);
             if (!res.ok) throw new Error("Error al obtener usuarios");
             const data = await res.json();
             setUsers(data.users || []);
