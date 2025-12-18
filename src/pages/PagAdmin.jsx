@@ -3,11 +3,9 @@ import AdminHeader from "../components/Header/AdminHeader";
 import { useAuth } from "../auth/AuthContext";
 import TicketsBoard from "../components/Board/TicketBoard";
 import CreateTicketModal from "../components/CreateTicketModal";
-
-
+import TicketModal from "../components/TicketModal";
 import { COLUMN_TO_STATE, columnOrder } from "../hooks/useMyTickets";
 import { useAllTicketsBoard } from "../hooks/useAllTickets";
-
 
 const API_URL = "http://localhost:8080";
 
@@ -15,6 +13,18 @@ const Admin = () => {
   const { user } = useAuth();
   const { columns, setColumns, loading } = useAllTicketsBoard();
 
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openTicket = (id) => {
+    setSelectedTicketId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeTicket = () => {
+    setIsModalOpen(false);
+    setSelectedTicketId(null);
+  };
 
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -98,8 +108,14 @@ const Admin = () => {
           columnOrder={columnOrder}
           loading={loading}
           onDragEnd={handleDragEnd}
+          onTicketClick={openTicket}
         />
 
+        <TicketModal
+          open={isModalOpen}
+          onClose={closeTicket}
+          ticketId={selectedTicketId}
+        />
 
         <CreateTicketModal
           open={openCreate}
