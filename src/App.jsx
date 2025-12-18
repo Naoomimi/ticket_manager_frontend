@@ -1,30 +1,54 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Tiquetes from "./pages/Tiquetes";
 import Administrador from "./pages/PagAdmin";
 import PerfilUsu from "./pages/PerfilUsu";
 import RutaPrivada from "./auth/RutaPrivada";
+import AdminUsers from "./pages/Admin"; 
 
-//Cuando terminemos de probar todo ya ahí modificamos esto para proteger las rutas
 function App() {
   return (
     <Routes>
-      {/* Las rutas pública */}
+      {/* Pública */}
       <Route path="/" element={<Login />} />
 
-      {/* Rutas protegidas */}
-      <Route path="/tiquetes"  element={
-        <Tiquetes /> }
+      {/* Protegidas */}
+      <Route
+        path="/tiquetes"
+        element={
+          <RutaPrivada>
+            <Tiquetes />
+          </RutaPrivada>
+        }
       />
 
-            <Route path="/admin"  element={
-        <Administrador /> }
+      <Route
+        path="/admin"
+        element={
+          <RutaPrivada>
+            <Administrador />
+          </RutaPrivada>
+        }
       />
 
-            <Route path="/perfil"  element={
-        <PerfilUsu /> }
+      
+      <Route
+        path="/admin/users"
+        element={
+          <RutaPrivada>
+            <AdminUsers />
+          </RutaPrivada>
+        }
       />
 
+      <Route
+        path="/perfil"
+        element={
+          <RutaPrivada>
+            <PerfilUsu />
+          </RutaPrivada>
+        }
+      />
     </Routes>
   );
 }
