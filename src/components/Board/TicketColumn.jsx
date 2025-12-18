@@ -9,7 +9,7 @@ export default function TicketColumn({ column, onTicketClick }) {
         <div
           ref={provided.innerRef}
           {...provided.droppableProps}
-          className="border-r last:border-r-0 border-slate-200 flex flex-col items-center pt-4 overflow-y-auto"
+          className="border-r last:border-r-0 border-slate-200/70 px-4 pt-4 pb-6 overflow-y-auto"
         >
           {column.tickets.map((ticket, index) => (
             <Draggable
@@ -18,7 +18,7 @@ export default function TicketColumn({ column, onTicketClick }) {
               index={index}
             >
               {(provided) => (
-                <div
+                <div className="flex flex-col gap-4 items-center"
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}

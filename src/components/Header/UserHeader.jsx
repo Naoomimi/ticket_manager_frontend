@@ -25,7 +25,7 @@ const UserHeader = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/"); // 👈 vuelve al login
+    navigate("/");
   };
 
   const goToProfile = () => {
@@ -34,8 +34,8 @@ const UserHeader = () => {
   };
 
   return (
-    <header className="w-full h-16 bg-white border-b border-slate-200 flex items-center justify-end px-6 shadow-sm">
-      <div className="relative" ref={menuRef}>
+   <header className="relative z-50 w-full h-16 bg-white border-b border-slate-200 flex items-center justify-end px-6 shadow-sm">
+  <div className="relative" ref={menuRef}>
         <button
           onClick={() => setOpen(!open)}
           className="w-9 h-9 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold hover:bg-purple-600 transition"

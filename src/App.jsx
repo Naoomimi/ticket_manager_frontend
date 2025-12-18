@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Tiquetes from "./pages/Tiquetes";
 import Administrador from "./pages/PagAdmin";
-import Perfil from "./pages/Perfil";
+import PerfilUsu from "./pages/PerfilUsu";
 import RutaPrivada from "./auth/RutaPrivada";
 
 //Cuando terminemos de probar todo ya ahí modificamos esto para proteger las rutas
@@ -22,7 +22,7 @@ function App() {
       />
 
             <Route path="/perfil"  element={
-        <Perfil /> }
+        <PerfilUsu /> }
       />
 
     </Routes>

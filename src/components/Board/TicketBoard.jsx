@@ -12,8 +12,9 @@ export default function TicketsBoard({
   onTicketClick,
 }) {
   return (
-    <section className="w-full bg-white rounded-[28px] border border-slate-200 overflow-hidden shadow-sm">
-      <BoardHeader title={title} columnOrder={columnOrder} columns={columns} />
+<section className="relative w-full bg-white rounded-[28px] border border-slate-200 overflow-hidden shadow-md">
+  <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-slate-300/70" />
+  <BoardHeader title={title} columnOrder={columnOrder} columns={columns} />
 
       {loading ? (
         <div className="h-[62vh] flex items-center justify-center text-sm text-slate-500">

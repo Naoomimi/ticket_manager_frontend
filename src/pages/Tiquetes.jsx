@@ -92,19 +92,19 @@ const Tiquetes = () => {
   };
 
   return (
-  <div className="min-h-screen bg-[#f3e9ff] flex flex-col">
-    <UserHeader />
+<div className="min-h-screen bg-[#f3e9ff] flex flex-col">
+  <UserHeader />
 
-    <main className="flex-1 px-6 py-8">
-      <TicketsBoard
-        title="Mis tiquetes"
-        columns={columns}
-        columnOrder={columnOrder}
-        loading={loading}
-        onDragEnd={handleDragEnd}
-        onTicketClick={openTicket}
-      />
-    </main>
+  <main className="flex-1 w-full max-w-[1400px] mx-auto px-6 py-8">
+    <TicketsBoard
+      title="Mis tiquetes"
+      columns={columns}
+      columnOrder={columnOrder}
+      loading={loading}
+      onDragEnd={handleDragEnd}
+      onTicketClick={openTicket}
+    />
+  </main>
 
     <TicketModal
       open={isModalOpen}
