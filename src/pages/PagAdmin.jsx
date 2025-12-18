@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import AdminHeader from "../components/Header/AdminHeader";
 import { useAuth } from "../auth/AuthContext";
 import TicketsBoard from "../components/Board/TicketBoard";
-import {
-  useMyTicketsBoard,
-  COLUMN_TO_STATE,
-  columnOrder,
-} from "../hooks/useMyTickets";
+import CreateTicketModal from "../components/CreateTicketModal";
 
-// EDITE ESTA PAGINA CON SUS CMABIOS YA SÍ, KIANY. Yo solo pegué y copié el diseño de la pagina Tiquetes
+
+import { COLUMN_TO_STATE, columnOrder } from "../hooks/useMyTickets";
+import { useAllTicketsBoard } from "../hooks/useAllTickets";
+
+
 const API_URL = "http://localhost:8080";
 
 const Admin = () => {
   const { user } = useAuth();
-  const { columns, setColumns, loading } = useMyTicketsBoard(user);
+  const { columns, setColumns, loading } = useAllTicketsBoard();
+
+
+  const [openCreate, setOpenCreate] = useState(false);
 
   const updateTicketStateOnServer = async (ticket, newStateId) => {
     try {
@@ -52,7 +55,6 @@ const Admin = () => {
     const [movedTicket] = sourceTickets.splice(source.index, 1);
 
     if (sourceCol.id === destCol.id) {
-      // reorden en misma columna
       sourceTickets.splice(destination.index, 0, movedTicket);
       setColumns({
         ...columns,
@@ -61,7 +63,6 @@ const Admin = () => {
       return;
     }
 
-    // mover entre columnas
     const destTickets = [...destCol.tickets];
     const newStateId = COLUMN_TO_STATE[destCol.id];
 
@@ -82,12 +83,29 @@ const Admin = () => {
       <AdminHeader />
 
       <main className="flex-1 px-6 py-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Admin</h2>
+          <button
+            onClick={() => setOpenCreate(true)}
+            className="px-4 py-2 rounded-full bg-emerald-400 hover:bg-emerald-500 text-white text-sm font-semibold shadow"
+          >
+            Create ticket
+          </button>
+        </div>
+
         <TicketsBoard
-          title="Mis tiquetes"
+          title="Todos los tiquetes"
           columns={columns}
           columnOrder={columnOrder}
           loading={loading}
           onDragEnd={handleDragEnd}
+        />
+
+
+        <CreateTicketModal
+          open={openCreate}
+          onClose={() => setOpenCreate(false)}
+          adminUserId={user?.Id}
         />
       </main>
     </div>
