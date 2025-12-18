@@ -23,6 +23,7 @@ else navigate("/tiquetes");
     }
   };
 
+
   return (
   <div className="min-h-screen flex items-center justify-center bg-[#f3e8ff]">
     <div className="relative w-[320px] bg-white rounded-3xl shadow-md px-10 py-10 flex flex-col items-stretch">
