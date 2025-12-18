@@ -6,6 +6,7 @@ import Administrador from "./pages/PagAdmin";
 import Perfil from "./pages/Perfil";
 import RutaPrivada from "./auth/RutaPrivada";
 
+//Cuando terminemos de probar todo ya ahí modificamos esto para proteger las rutas
 function App() {
   return (
     <Routes>
