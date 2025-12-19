@@ -1,27 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminHeader from "../components/Header/AdminHeader";
 import { useAuth } from "../auth/AuthContext";
 import TicketsBoard from "../components/Board/TicketBoard";
 import CreateTicketModal from "../components/CreateTicketModal";
-
-
+import TicketModal from "../components/TicketModal";
 import { COLUMN_TO_STATE, columnOrder } from "../hooks/useMyTickets";
 import { useAllTicketsBoard } from "../hooks/useAllTickets";
-
 
 const API_URL = "http://localhost:8080";
 
 const Admin = () => {
   const { user } = useAuth();
   const { columns, setColumns, loading } = useAllTicketsBoard();
+  const [users, setUsers] = useState({});
+  const [selectedTicketId, setSelectedTicketId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const openTicket = (id) => {
+    setSelectedTicketId(id);
+    setIsModalOpen(true);
+  };
+
+  const closeTicket = () => {
+    setIsModalOpen(false);
+    setSelectedTicketId(null);
+  };
+
+  const fetchUsers = async () => {
+    try {
+        const res = await fetch(`${API_URL}/users/`);
+        if (!res.ok) throw new Error("Error al obtener usuarios");
+        const data = await res.json();
+        let users_id_to_name = {}
+        data.users.forEach( user => {
+          users_id_to_name[user.Id] = user.Name
+        })
+        setUsers(users_id_to_name);
+    } catch (err) {
+      console.log(`error: ${err}`)
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   const [openCreate, setOpenCreate] = useState(false);
 
   const updateTicketStateOnServer = async (ticket, newStateId) => {
     try {
       const body = {
-        id: ticket.id,
         title: ticket.title,
         description: ticket.description,
         state_id: newStateId,
@@ -29,11 +57,12 @@ const Admin = () => {
         assigned_to_user_id: ticket.assigned_to_user_id,
       };
 
-      await fetch(`${API_URL}/tickets/`, {
+      await fetch(`${API_URL}/tickets/${ticket.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
     } catch (err) {
       console.error("Error actualizando ticket en backend:", err);
     }
@@ -74,7 +103,6 @@ const Admin = () => {
       [sourceCol.id]: { ...sourceCol, tickets: sourceTickets },
       [destCol.id]: { ...destCol, tickets: destTickets },
     });
-
     updateTicketStateOnServer(movedTicket, newStateId);
   };
 
@@ -99,8 +127,15 @@ const Admin = () => {
           columnOrder={columnOrder}
           loading={loading}
           onDragEnd={handleDragEnd}
+          onTicketClick={openTicket}
         />
 
+        <TicketModal
+          open={isModalOpen}
+          onClose={closeTicket}
+          ticketId={selectedTicketId}
+          usersById={users}
+        />
 
         <CreateTicketModal
           open={openCreate}

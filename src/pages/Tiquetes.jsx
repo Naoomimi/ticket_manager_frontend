@@ -44,6 +44,7 @@ const Tiquetes = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+
     } catch (err) {
       console.error("Error actualizando ticket en backend:", err);
     }
@@ -86,7 +87,6 @@ const Tiquetes = () => {
       [sourceCol.id]: { ...sourceCol, tickets: sourceTickets },
       [destCol.id]: { ...destCol, tickets: destTickets },
     });
-
     updateTicketStateOnServer(movedTicket, newStateId);
   };
 
@@ -95,6 +95,7 @@ const Tiquetes = () => {
   <UserHeader />
 
   <main className="flex-1 w-full max-w-[1400px] mx-auto px-6 py-8">
+
     <TicketsBoard
       title="Mis tiquetes"
       columns={columns}

@@ -37,12 +37,12 @@ export default function TicketModal({ open, onClose, ticketId, usersById }) {
 
   const assignedName = useMemo(() => {
     if (!ticket) return "—";
-    return usersById?.[ticket.Assigned_to_user_id]?.Name ?? `User #${ticket.Assigned_to_user_id}`;
+    return usersById?.[ticket.Assigned_to_user_id] ?? `User #${ticket.Assigned_to_user_id}`;
   }, [ticket, usersById]);
 
   const createdByName = useMemo(() => {
     if (!ticket) return "—";
-    return usersById?.[ticket.Created_by_user_id]?.Name ?? `User #${ticket.Created_by_user_id}`;
+    return usersById?.[ticket.Created_by_user_id] ?? `User #${ticket.Created_by_user_id}`;
   }, [ticket, usersById]);
 
   const fetchComments = useCallback(async () => {
@@ -171,13 +171,6 @@ export default function TicketModal({ open, onClose, ticketId, usersById }) {
     }
   };
 
-  const canEditOrDelete = (comment) => {
-    if (!user) return false;
-    const commentUserId = comment.Created_by_user_id || comment.created_by_user_id;
-    const currentUserId = user.Id || user.id;
-    return commentUserId === currentUserId;
-  };
-
   return (
     <Modal open={open} onClose={onClose} title={`Ticket #${ticketId}`}>
       {loading || !ticket ? (
@@ -222,7 +215,6 @@ export default function TicketModal({ open, onClose, ticketId, usersById }) {
                     usersById?.[c.Created_by_user_id]?.Name ??
                     usersById?.[c.created_by_user_id]?.Name ??
                     `User #${c.Created_by_user_id || c.created_by_user_id}`;
-                  const canEdit = canEditOrDelete(c);
 
                   return (
                     <div
@@ -231,7 +223,7 @@ export default function TicketModal({ open, onClose, ticketId, usersById }) {
                     >
                       <div className="flex items-start justify-between mb-1">
                         <div className="text-xs text-slate-500">{author}</div>
-                        {canEdit && !isEditing && (
+                        {!isEditing && (
                           <div className="flex gap-1">
                             <button
                               onClick={() => handleStartEdit(c)}
